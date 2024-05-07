@@ -51,19 +51,23 @@ const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 function NavBar() {
-
   return (
     <nav className="nav-bar">
+      <Logo />
+      <Search />
+      <p className="num-results">
+        Found <strong>X</strong> results
+      </p>
+    </nav>
+  );
+}
+function Logo() {
+  return (
     <div className="logo">
       <span role="img">🍿</span>
       <h1>usePopcorn</h1>
     </div>
-    <Search />
-    <p className="num-results">
-      Found <strong>X</strong> results
-    </p>
-  </nav>
-  )
+  );
 }
 function Search() {
   const [query, setQuery] = useState("");
@@ -76,9 +80,9 @@ function Search() {
       value={query}
       onChange={(e) => setQuery(e.target.value)}
     />
-  )
+  );
 }
-function Main(){
+function Main() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen1, setIsOpen1] = useState(true);
@@ -90,8 +94,6 @@ function Main(){
 
   return (
     <>
-   
-
       <main className="main">
         <div className="box">
           <button
@@ -185,5 +187,5 @@ export default function App() {
       <NavBar />
       <Main />
     </>
-  )
+  );
 }
