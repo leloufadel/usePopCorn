@@ -99,7 +99,6 @@ function Main() {
   );
 }
 function ListBox() {
-  const [movies, setMovies] = useState(tempMovieData);
 
   const [isOpen1, setIsOpen1] = useState(true);
 
@@ -113,9 +112,25 @@ function ListBox() {
         {isOpen1 ? "–" : "+"}
       </button>
       {isOpen1 && (
-        <ul className="list">
+        <MovieLists />
+      )}
+    </div>
+  );
+}
+function MovieLists() {
+  const [movies, setMovies] = useState(tempMovieData);
+
+  return (
+    <ul className="list">
           {movies?.map((movie) => (
-            <li key={movie.imdbID}>
+            <Movie movie={movie} key={movie.imdbID}/>
+          ))}
+        </ul>
+  )
+}
+function Movie ({movie}) {
+  return (
+  <li >
               <img src={movie.Poster} alt={`${movie.Title} poster`} />
               <h3>{movie.Title}</h3>
               <div>
@@ -125,12 +140,7 @@ function ListBox() {
                 </p>
               </div>
             </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
+)}
 
 function WatchedBox() {
   const [isOpen2, setIsOpen2] = useState(true);
@@ -151,6 +161,7 @@ function WatchedBox() {
 }
 
 function MovieList() {
+
   const [watched, setWatched] = useState(tempWatchedData);
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
