@@ -16,8 +16,10 @@ export default function StartingRating({
   maxRating = 5,
   color = "gold",
   size = 24,
+  messages = [],
+  defaultRating = 2,
 }) {
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
   function handleRating(rating) {
     setRating(rating);
@@ -44,7 +46,11 @@ export default function StartingRating({
           />
         ))}
       </div>
-      <p style={textStyle}>{rating || ""}</p>
+      <p style={textStyle}>
+        {messages.length === maxRating
+          ? messages[tempRating ? tempRating - 1 : rating - 1]
+          : tempRating || rating || ""}
+      </p>
     </div>
   );
 }
