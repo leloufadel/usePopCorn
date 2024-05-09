@@ -218,14 +218,32 @@ export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
   const [movie, setMovie] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+ const [error, setError] = useState(null);
 
+  function Loader(){
+    return <p className="loader">Loading...</p>
+  
+  }
+function ErrorMessage({message}){
+  return <p className="error">{message}</p>
+}
 useEffect( 
   function (){
     async function fetchMovie(){
+     try{ setIsLoading(true);
       const res = await fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=aa831d54`)
+      if(!res.ok){
+        throw new Error("Something went wrong while fetching the data");
+      }
       const data = await res.json()
-      console.log(data) // Log the entire data object
+      
+      console.log(data); 
       setMovie(data);
+      setIsLoading(false)} catch (error){
+        setError(error.message);
+      }
+
     }
     fetchMovie();
   },[] );
@@ -240,7 +258,15 @@ useEffect(
       </NavBar>
       <Main>
         <Box>
-          <MovieLists movies={movies} />{" "}
+          {/* { isLoading ?<Loader /> : <MovieLists movies={movies} />}{" "} */}
+       {/* // is not loding and no error display moviesLists 
+       // if loading and no error display loader 
+        // if error display error message */}
+        
+       {!isLoading && !error && <MovieLists movies={movies} />}
+       {isLoading && !error && <Loader /> }
+        {error && <ErrorMessage message={error} />}
+       
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
