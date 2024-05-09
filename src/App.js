@@ -237,14 +237,18 @@ useEffect(
         throw new Error("Something went wrong while fetching the data");
       }
       const data = await res.json()
+      if(data.Response === "False") throw new Error(data.Error);
       
       console.log(data); 
       setMovie(data);
-      setIsLoading(false)} catch (error){
+     } catch (error){
         setError(error.message);
       }
-
+      finally{
+        setIsLoading(false);
+      }
     }
+    
     fetchMovie();
   },[] );
 
@@ -262,9 +266,9 @@ useEffect(
        {/* // is not loding and no error display moviesLists 
        // if loading and no error display loader 
         // if error display error message */}
-        
+
        {!isLoading && !error && <MovieLists movies={movies} />}
-       {isLoading && !error && <Loader /> }
+       {isLoading && <Loader /> }
         {error && <ErrorMessage message={error} />}
        
         </Box>
