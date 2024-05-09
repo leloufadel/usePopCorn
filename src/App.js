@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const tempMovieData = [
   {
@@ -213,13 +213,22 @@ function WatchedMovie({ movie }) {
     </li>
   );
 }
+
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
+  const [movie, setMovie] = useState(null);
 
- fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=aa831d54`)
- .then((res) => res.json())
- .then((data) => console.log(data));
+useEffect( 
+  function (){
+    async function fetchMovie(){
+      const res = await fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=aa831d54`)
+      const data = await res.json()
+      console.log(data) // Log the entire data object
+      setMovie(data);
+    }
+    fetchMovie();
+  },[] );
 
   return (
     <>
