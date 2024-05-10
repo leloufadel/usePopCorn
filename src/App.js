@@ -202,7 +202,7 @@ export default function App() {
  //2
   function MovieDetails({ selectedId, oncloseMovie}){
     return <div className="details">{selectedId}
-    <button onClick= {oncloseMovie}> &larr;</button>
+    <button className = "btn-back" onClick= {oncloseMovie}> &larr;</button>
     </div>
   }
 
@@ -220,7 +220,7 @@ export default function App() {
   }
 // /6
   function HandleSelectedMovie( id ) {
-    setSelectedId(id);
+    setSelectedId((selectedId) => selectedId === id ? null : id);
   }
  function HandleCloseMovie() {
    setSelectedId(null);
