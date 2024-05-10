@@ -90,18 +90,21 @@ function Box({ children }) {
   );
 }
 
-function MovieLists({ movies }) {
+function MovieLists({ movies, onSelectMovie}) {
   return (
     <ul className="list">
       {movies?.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} />
+        // /8
+        <Movie movie={movie} key={movie.imdbID} onSelectMovie={onSelectMovie}/>
       ))}
     </ul>
   );
 }
-function Movie({ movie }) {
+//9
+function Movie({ movie, onSelectMovie }) {
   return (
-    <li>
+    //10
+    <li onClick={() => onSelectMovie(movie.imdbID)}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
@@ -146,7 +149,7 @@ function WatchedSummary({ watched }) {
 
 function WatchedMoviesList({ watched }) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {watched.map((movie) => (
         <WatchedMovie movie={movie} key={movie.imdbID} />
       ))}
@@ -197,8 +200,10 @@ export default function App() {
     return <p className="error">{message}</p>;
   }
  //2
-  function MovieDetails({ selectedId}){
-    return <div className="details">{selectedId}</div>
+  function MovieDetails({ selectedId, oncloseMovie}){
+    return <div className="details">{selectedId}
+    <button onClick= {oncloseMovie}> &larr;</button>
+    </div>
   }
 
 
@@ -212,6 +217,13 @@ export default function App() {
         onChange={(e) => setQuery(e.target.value)}
       />
     );
+  }
+// /6
+  function HandleSelectedMovie( id ) {
+    setSelectedId(id);
+  }
+ function HandleCloseMovie() {
+   setSelectedId(null);
   }
   useEffect(function () {
     async function fetchMovie() {
@@ -250,14 +262,15 @@ export default function App() {
       </NavBar>
       <Main>
         <Box>
-          {!isLoading && !error && <MovieLists movies={movies} />}
+          {/* 7 */}
+          {!isLoading && !error && <MovieLists movies={movies} onSelectMovie={HandleSelectedMovie}/>}
           {isLoading && <Loader />}
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          {/* 3 */}
+          {/* //3 */}
           { selectedId ? (
-          <MovieDetails selectedId={selectedId} />) :
+          <MovieDetails selectedId={selectedId} oncloseMovie={HandleCloseMovie} />) :
           (
           <>
           <WatchedSummary watched={watched} />
