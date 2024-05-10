@@ -185,6 +185,9 @@ export default function App() {
   const [movie, setMovie] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  //1
+  const [selectedId, setSelectedId] = useState(null);
+
   const apiKey = "aa831d54";
 
   function Loader() {
@@ -193,6 +196,11 @@ export default function App() {
   function ErrorMessage({ message }) {
     return <p className="error">{message}</p>;
   }
+ //2
+  function MovieDetails({ selectedId}){
+    return <div className="details">{selectedId}</div>
+  }
+
 
   function Search({ query, setQuery }) {
     return (
@@ -247,8 +255,14 @@ export default function App() {
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
+          {/* 3 */}
+          { selectedId ? (
+          <MovieDetails selectedId={selectedId} />) :
+          (
+          <>
           <WatchedSummary watched={watched} />
-          <WatchedMoviesList watched={watched} />
+          <WatchedMoviesList watched={watched} /></>
+        )}
         </Box>
       </Main>
     </>
